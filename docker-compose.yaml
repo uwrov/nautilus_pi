@@ -1,0 +1,23 @@
+version: "3.7"
+
+services:
+  surface:
+    network_mode: host
+    build: ./
+    image: nautilus_pi
+    container_name: pi
+    environment:
+      - ROS_HOSTNAME=${HOSTNAME}
+    stdin_open: true
+    tty: true
+    volumes:
+      - type: volume
+        source: nautilus_logs
+        target: /root/logs
+      - type: bind
+        source: ./src
+        target: /root/catkin_ws/src
+
+volumes:
+  nautilus_logs:
+    external: true
