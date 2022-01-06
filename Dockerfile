@@ -22,8 +22,8 @@ RUN mkdir -p /root/catkin_ws/src
 WORKDIR /root
 
 # Create a copy of our ROS packages and build
-COPY src/nautilus_launch /root/catkin_ws/src/nautilus_launch
-COPY src/nautilus_scripts /root/catkin_ws/src/nautilus_scripts
+COPY src/uwrov_auto /root/catkin_ws/src/uwrov_auto
+COPY src/uwrov_cams /root/catkin_ws/src/uwrov_cams
 RUN . ~/.bashrc && . /opt/ros/${ROS_DISTRO}/setup.sh \
     && cd catkin_ws \
     && catkin_make
