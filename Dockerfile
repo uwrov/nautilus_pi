@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM ros:noetic-ros-core-focal
+FROM arm32v7/ros:noetic-ros-base
 
 ENV ROS_DISTRO noetic
 
@@ -9,7 +9,13 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     python3-pip \
     netbase \
-    net-tools
+    net-tools \
+    cmake gfortran libjpeg-dev libtiff-dev libgif-dev \
+    libavcodec-dev libavformat-dev libswscale-dev libgtk2.0-dev libcanberra-gtk* \
+    libxvidcore-dev libx264-dev libgtk-3-dev libtbb2 libtbb-dev libdc1394-22-dev \
+    libv4l-dev libopenblas-dev libatlas-base-dev libblas-dev libjasper-dev \
+    liblapack-dev libhdf5-dev gcc-arm* protobuf-compiler libgstreamer1.0-dev \
+    libilmbase-dev libopenexr-dev
 
 # Install python packages
 COPY requirements.txt /requirements.txt
