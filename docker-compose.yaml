@@ -5,11 +5,12 @@ services:
     network_mode: host
     build: ./
     image: nautilus_pi
-    container_name: pi
+    container_name: ${HOSTNAME} 
     environment:
       - ROS_HOSTNAME=${HOSTNAME}
     stdin_open: true
     tty: true
+    privileged: true
     volumes:
       - type: volume
         source: nautilus_logs
