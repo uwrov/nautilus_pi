@@ -5,9 +5,11 @@ services:
     network_mode: host
     build: ./
     image: nautilus_pi
-    container_name: ${HOSTNAME} 
+    container_name: ${HOSTNAME}
     environment:
       - ROS_HOSTNAME=${HOSTNAME}
+      - ROS_LOG_DIR=/root/logs
+      - LD_LIBRARY_PATH=/opt/vc/lib
     stdin_open: true
     tty: true
     privileged: true
@@ -18,6 +20,9 @@ services:
       - type: bind
         source: ./src
         target: /root/catkin_ws/src
+      - type: bind
+        source: /opt/vc
+        target: /opt/vc
 
 volumes:
   nautilus_logs:

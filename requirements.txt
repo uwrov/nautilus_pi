@@ -1,3 +1,2 @@
 # Add any installed python packages into this list
-opencv-python-headless
-git+https://github.com/waveform80/picamera
+# opencv-python-headless
