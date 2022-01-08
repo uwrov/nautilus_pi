@@ -8,7 +8,7 @@
 #
 # This will change this machine's hostname to 'main', and request
 # a static ip as defined in net_config
-
+import os
 import sys
 
 if len(sys.argv) != 3:
@@ -16,14 +16,16 @@ if len(sys.argv) != 3:
     sys.exit()
 
 hn = sys.argv[2]
+target_ip = None
 
 with open('net_config') as config_file:
 
-    hosts = ()
     for line in config_file:
-        _, hostname = line.split()
-        hosts.add(hostname)
-    if hn not in hosts:
+        ip, hostname = line.split()
+        if hostname == hn:
+            target_ip = ip
+
+    if target_ip is None:
         print("Given hostname not found in net_config file")
         sys.exit()
 
@@ -34,9 +36,18 @@ with open('net_config') as config_file:
         for line in config_file:
             host_file.write(line)
 
-    # edit /etc/hostname
-    config_file.seek(0)
-    with open('/etc/hostname', 'w') as hostname_file:
-        hostname_file.write(hn)
+# edit /etc/hostname
+with open('/etc/hostname', 'w') as hostname_file:
+    hostname_file.write(hn)
 
-    # change files to request a static ip
+# change files to request a static ip
+with open('/etc/netplan/01-netcfg.yaml', 'w+') as netplan_file:
+    with open('netplan', 'r') as target:
+        for line in target:
+            if line == 'CHANGE_ME_IP':
+                line = hn + '/24'
+            netplan_file.write(line)
+
+os.system("sudo netplan apply")
+
+print("Network Configuration Complete, run ifconfig and make sure desired ip is correct")
