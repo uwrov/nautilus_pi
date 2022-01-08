@@ -18,7 +18,7 @@ if len(sys.argv) != 2:
 hn = sys.argv[1]
 target_ip = None
 
-with open('net_config') as config_file:
+with open('config/net_config') as config_file:
 
     for line in config_file:
         ip, hostname = line.split()
@@ -42,7 +42,7 @@ with open('/etc/hostname', 'w') as hostname_file:
 # change files to request a static ip
 try:
     with open('/etc/netplan/01-netcfg.yaml', 'w+') as netplan_file:
-        with open('netplan', 'r') as target:
+        with open('config/netplan', 'r') as target:
             for line in target:
                 if line[-2] == '-':
                     line = line + target_ip + '/24'
@@ -50,7 +50,7 @@ try:
     os.system("sudo netplan apply")
 except:
     with open('/etc/dhcpcd.conf', 'a') as file:
-        with open('dhcpcd', 'r') as target:
+        with open('config/dhcpcd', 'r') as target:
             for line in target:
                 if line[-2] == '=':
                     line = line[:-1] + target_ip + '/24\n'
