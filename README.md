@@ -21,7 +21,8 @@ Note that the `net_setup.py` script currently doesn't support running multiple t
 ### Using the Container
 The container will build itself on the first run of `sudo docker-compose up`, future builds must be triggered manually with `sudo docker-compose build`.
 
-Launch the container with `sudo docker-compose up`, then use the alias `con` to connect to the container's terminal (`con` is a shortcut for `sudo docker exec -it pi_container /bin/bash`).
+Launch the container with `sudo docker-compose up`, then connect to the container with `sudo docker exec -it pi_container /bin/bash`.
+I recommend creating an alias for this command with `alias con="sudo docker exec -it pi_container /bin/bash"` so you can simply connect with `con`.
 
 Once the container is up and running, we have a nice little with ROS and OpenCV, which has been preconfigured to work with our surface node.
 

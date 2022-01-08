@@ -17,4 +17,3 @@ RUN . ~/.bashrc && . /opt/ros/${ROS_DISTRO}/setup.sh \
     && catkin_make
 
 RUN echo "source /root/catkin_ws/devel/setup.bash" >> ~/.bashrc
-RUN alias con="sudo docker exec -it pi_container /bin/bash"
