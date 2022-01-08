@@ -3,6 +3,8 @@ FROM arm32v7/ros:noetic-ros-base
 
 ENV ROS_DISTRO noetic
 
+RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
+
 # Installing Dependencies
 RUN apt-get update && apt-get install -y \
     git curl pkg-config \
