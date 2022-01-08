@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y \
     libv4l-dev v4l-utils \
     libtbb2 libtbb-dev
 
+# Download OpenCV source code
 RUN git clone --depth=1 https://github.com/opencv/opencv.git
 RUN mkdir /opencv/build
 WORKDIR /opencv/build
@@ -78,22 +79,14 @@ RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
     -D INSTALL_C_EXAMPLES=OFF \
     -D INSTALL_PYTHON_EXAMPLES=OFF ..
 
+# Build OpenCV (assumes 4 cores)
+RUN make -j4
+
+RUN make install
+RUN ldconfig && apt-get update
+
+WORKDIR /root
+RUN rm -rf opencv
+
 # Install pi camera
 RUN pip3 install git+https://github.com/waveform80/picamera
-
-# Create a catkin workspace
-# RUN mkdir -p /root/catkin_ws/src
-
-# # Set up ROS workspace
-# WORKDIR /root
-
-# # Create a copy of our ROS packages and build
-# COPY src/uwrov_auto /root/catkin_ws/src/uwrov_auto
-# COPY src/uwrov_cams /root/catkin_ws/src/uwrov_cams
-# RUN . ~/.bashrc && . /opt/ros/${ROS_DISTRO}/setup.sh \
-#     && cd catkin_ws \
-#     && catkin_make
-
-# RUN echo "source /root/catkin_ws/devel/setup.bash" >> ~/.bashrc
-
-# ENV ROS_LOG_DIR /root/logs
