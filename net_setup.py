@@ -11,11 +11,11 @@
 import os
 import sys
 
-if len(sys.argv) != 3:
+if len(sys.argv) != 2:
     print("Usage: sudo python3 net_setup.py [hostname]")
     sys.exit()
 
-hn = sys.argv[2]
+hn = sys.argv[1]
 target_ip = None
 
 with open('net_config') as config_file:
@@ -31,8 +31,7 @@ with open('net_config') as config_file:
 
     # edit /etc/hosts
     config_file.seek(0)
-    with open('/etc/hosts', 'w') as host_file:
-        host_file.seek(11)
+    with open('/etc/hosts', 'a') as host_file:
         for line in config_file:
             host_file.write(line)
 
@@ -45,16 +44,16 @@ try:
     with open('/etc/netplan/01-netcfg.yaml', 'w+') as netplan_file:
         with open('netplan', 'r') as target:
             for line in target:
-                if line[-1] == '-':
+                if line[-2] == '-':
                     line = line + target_ip + '/24'
                 netplan_file.write(line)
     os.system("sudo netplan apply")
 except:
-    with open('/etc/dhcpcd.conf', 'wa') as file:
+    with open('/etc/dhcpcd.conf', 'a') as file:
         with open('dhcpcd', 'r') as target:
             for line in target:
-                if line[-1] == '=':
-                    line = line + target_ip + '/24'
+                if line[-2] == '=':
+                    line = line[:-1] + target_ip + '/24\n'
                 file.write(line)
 
 
