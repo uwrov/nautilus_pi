@@ -41,13 +41,21 @@ with open('/etc/hostname', 'w') as hostname_file:
     hostname_file.write(hn)
 
 # change files to request a static ip
-with open('/etc/netplan/01-netcfg.yaml', 'w+') as netplan_file:
-    with open('netplan', 'r') as target:
-        for line in target:
-            if line == 'CHANGE_ME_IP':
-                line = hn + '/24'
-            netplan_file.write(line)
+try:
+    with open('/etc/netplan/01-netcfg.yaml', 'w+') as netplan_file:
+        with open('netplan', 'r') as target:
+            for line in target:
+                if line[-1] == '-':
+                    line = line + target_ip + '/24'
+                netplan_file.write(line)
+    os.system("sudo netplan apply")
+except:
+    with open('/etc/dhcpcd.conf', 'wa') as file:
+        with open('dhcpcd', 'r') as target:
+            for line in target:
+                if line[-1] == '=':
+                    line = line + target_ip + '/24'
+                file.write(line)
 
-os.system("sudo netplan apply")
 
 print("Network Configuration Complete, run ifconfig and make sure desired ip is correct")
