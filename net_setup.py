@@ -56,5 +56,12 @@ except:
                     line = line[:-1] + target_ip + '/24\n'
                 file.write(line)
 
+# change the docker-compose environment variables file
+with open('./.env', 'w') as env_file:
+    env_file.write(f'HOSTNAME={hn}')
+    env_file.write(f'IP={target_ip}')
+    env_file.write(f'URI=http://192.168.0.69:11311') # NOTE: Hardcoded
+
+    env_file.truncate()
 
 print("Network Configuration Complete, run ifconfig and make sure desired ip is correct")
