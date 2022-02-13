@@ -52,7 +52,7 @@ except:
     with open('/etc/dhcpcd.conf', 'a') as file:
         with open('config/dhcpcd', 'r') as target:
             for line in target:
-                if line[-2] == '=':
+                if len(line) >= 2 and line[-2] == '=':
                     line = line[:-1] + target_ip + '/24\n'
                 file.write(line)
 
