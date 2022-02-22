@@ -32,3 +32,6 @@ catkin_install_python(PROGRAMS
 #   scripts/keyboard_controller.py
 #   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
+
+install(PROGRAMS scripts/pig.sh
+        DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
