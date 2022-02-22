@@ -16,4 +16,5 @@ RUN . ~/.bashrc && . /opt/ros/${ROS_DISTRO}/setup.sh \
     && cd catkin_ws \
     && catkin_make
 
+RUN python3 -m pip3 install pigpio
 RUN echo "source /root/catkin_ws/devel/setup.bash" >> ~/.bashrc
