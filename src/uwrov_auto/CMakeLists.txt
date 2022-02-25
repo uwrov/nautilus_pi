@@ -23,12 +23,15 @@ include_directories(
 
 # catkin_python_setup()
 
-# catkin_install_python(PROGRAMS
-#   scripts/motor_driver.py
-#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
+catkin_install_python(PROGRAMS
+  scripts/motor_driver.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 
 # catkin_install_python(PROGRAMS
 #   scripts/keyboard_controller.py
 #   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
+
+install(PROGRAMS scripts/pig.sh
+        DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

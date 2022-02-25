@@ -18,7 +18,7 @@ if len(sys.argv) != 2:
 hn = sys.argv[1]
 target_ip = None
 
-with open('net_config') as config_file:
+with open('config/net_config') as config_file:
 
     for line in config_file:
         ip, hostname = line.split()
@@ -42,7 +42,7 @@ with open('/etc/hostname', 'w') as hostname_file:
 # change files to request a static ip
 try:
     with open('/etc/netplan/01-netcfg.yaml', 'w+') as netplan_file:
-        with open('netplan', 'r') as target:
+        with open('config/netplan', 'r') as target:
             for line in target:
                 if line[-2] == '-':
                     line = line + target_ip + '/24'
@@ -50,11 +50,18 @@ try:
     os.system("sudo netplan apply")
 except:
     with open('/etc/dhcpcd.conf', 'a') as file:
-        with open('dhcpcd', 'r') as target:
+        with open('config/dhcpcd', 'r') as target:
             for line in target:
-                if line[-2] == '=':
+                if len(line) >= 2 and line[-2] == '=':
                     line = line[:-1] + target_ip + '/24\n'
                 file.write(line)
 
+# change the docker-compose environment variables file
+with open('./.env', 'w') as env_file:
+    env_file.write(f'HOSTNAME={hn}')
+    env_file.write(f'IP={target_ip}')
+    env_file.write(f'URI=http://192.168.0.69:11311') # NOTE: Hardcoded
+
+    env_file.truncate()
 
 print("Network Configuration Complete, run ifconfig and make sure desired ip is correct")
