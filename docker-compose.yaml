@@ -5,9 +5,11 @@ services:
     network_mode: host
     build: ./
     image: uwrov/pi_base:latest
-    container_name: ${HOSTNAME}
+    container_name: pi_container 
     environment:
       - ROS_HOSTNAME=${HOSTNAME}
+      - ROS_IP=${IP}
+      - ROS_MASTER_URI=${URI}
       - ROS_LOG_DIR=/root/logs
       - LD_LIBRARY_PATH=/opt/vc/lib
       - PYTHONPATH=/usr/local/lib/python3.8/site-packages

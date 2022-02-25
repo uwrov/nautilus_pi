@@ -5,15 +5,6 @@ from sensor_msgs.msg import CompressedImage
 import numpy as np
 import cv2
 
-# One-time steps to use the publisher:
-#   sudo apt-get update
-#   sudo apt-get install cmake gfortran libjpeg-dev libtiff-dev libgif-dev libavcodec-dev libavformat-dev libswscale-dev libgtk2.0-dev libcanberra-gtk* libxvidcore-dev libx264-dev libgtk-3-dev libtbb2 libtbb-dev libdc1394-22-dev libv4l-dev libopenblas-dev libatlas-base-dev libblas-dev libjasper-dev liblapack-dev libhdf5-dev gcc-arm* protobuf-compiler libgstreamer1.0-dev libilmbase-dev libopenexr-dev
-#
-# Every-time steps to use the publisher:
-#   In the terminal: export ROS_MASTER_URI=http://[VM IP]:11311
-#   In the terminal: export ROS_IP=[Pi IP]
-#   Run file (cd 2020-2021/src/camera_stream/scripts/, then python3 cam_pub.py)
-
 def streaming(msg, rate, stream, image_pub):
     while not rospy.is_shutdown():
         _, frame = stream.read()
@@ -30,7 +21,7 @@ if __name__ == '__main__':
     hn = os.environ.get('HOSTNAME')
     hn = 'pi' if hn is None else hn
 
-    image_pub = rospy.Publisher(f'/nautilus/{hn}/picam', CompressedImage, queue_size=1)
+    image_pub = rospy.Publisher(f'/nautilus/{hn}/usbcam', CompressedImage, queue_size=1)
     rospy.init_node('compress_stream')
     rate = rospy.Rate(24)
 
