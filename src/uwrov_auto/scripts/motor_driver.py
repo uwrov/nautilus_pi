@@ -7,7 +7,7 @@ from std_msgs.msg import MultiArrayLayout
 listen_topic = '/nautilus/motors/pwm'
 
 dims = [MultiArrayDimension('data', 6, 16)]
-layout = MultiArrayLayout(dims=dims, data_offset=0)
+layout = MultiArrayLayout(dim=dims, data_offset=0)
 
 pi = pigpio.pi()
 # thruster order: ['forward_left', 'forward_right', 'forward_top', 'sideways_top', 'up_left', 'up_right']

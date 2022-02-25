@@ -16,6 +16,16 @@ RUN bash ~/.bashrc && . /opt/ros/${ROS_DISTRO}/setup.sh \
     && cd catkin_ws \
     && catkin_make
 
-RUN apt-get update && apt-get install -y wget unzip
+RUN apt-get update && apt-get install -y \
+	wget unzip \
+	openssh-server openssh-client
+
+RUN mkdir -p /var/run/sshd
+RUN sed -i '/#PermitRootLogin .*/c\PermitRootLogin yes' /etc/ssh/sshd_config
+
+RUN echo "root:passwhat"|chpasswd
+
 RUN unzip -f master.zip && cd pigpio-master && make && sudo make install 
 RUN echo "source /root/catkin_ws/devel/setup.bash" >> ~/.bashrc
+
+ENTRYPOINT service ssh restart && sudo pigpiod && bash
