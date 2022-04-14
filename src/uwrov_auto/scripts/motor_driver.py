@@ -9,7 +9,7 @@ listen_topic = '/nautilus/motors/pwm'
 dims = [MultiArrayDimension('data', 6, 16)]
 layout = MultiArrayLayout(dim=dims, data_offset=0)
 
-pi = pigpio.pi()
+pi = pigpio.pi("main", 8888)
 # thruster order: ['forward_left', 'forward_right', 'forward_top', 'sideways_top', 'up_left', 'up_right']
 thruster_pins = {
         'forward_left': 21, # Port Bow
@@ -28,6 +28,7 @@ def pwm_apply_callback(msg):
 
 
 def main():
+    print("Starting Motor Drivers")
     print('subscribing to:', listen_topic)
 
     rospy.init_node('motor_driver')
