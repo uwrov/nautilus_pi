@@ -17,12 +17,12 @@ lock = threading.Lock()
 pi = pigpio.pi()
 # thruster order: ['forward_left', 'forward_right', 'forward_top', 'sideways_top', 'up_left', 'up_right']
 thruster_pins = {
-        'forward_left': 21, # Port Bow
-        'forward_right': 20, # Starboard Bow
-        'forward_top': 16, # Stern
-        'sideways_top': 12, # Bow
-        'up_left': 26, # Port
-        'up_right': 19 # Starboard
+        'forward_left': 26, # Port Bow
+        'forward_right': 12, # Starboard Bow
+        'forward_top': 19, # Stern
+        'sideways_top': 20, # Bow
+        'up_left': 21, # Port
+        'up_right': 16 # Starboard
         }
 
 pins = list(thruster_pins.values())
