@@ -17,20 +17,28 @@ lock = threading.Lock()
 pi = pigpio.pi("main", 8888)
 # thruster order: ['forward_left', 'forward_right', 'forward_top', 'sideways_top', 'up_left', 'up_right']
 thruster_pins = {
-        'forward_left': 26, # Port Bow
-        'forward_right': 12, # Starboard Bow
-        'forward_top': 19, # Stern
-        'sideways_top': 20, # Bow
-        'up_left': 21, # Port
-        'up_right': 16 # Starboard
+        'forward_left': {'pin': 21, 'reversed': True},      # Port Bow
+        'forward_right': {'pin': 26, 'reversed': True},     # Starboard Bow
+        'forward_top': {'pin': 16, 'reversed': False},      # Stern
+        'sideways_top': {'pin': 20, 'reversed': True},      # Bow
+        'up_left': {'pin': 12, 'reversed': False},          # Port
+        'up_right': {'pin': 19, 'reversed': False}          # Starboard
         }
+
 
 pins = list(thruster_pins.values())
 
 def pwm_apply_callback(msg):
     if not lock.locked():
         for pin, pwm in zip(pins, msg.data):
-            pi.set_servo_pulsewidth(pin, pwm)
+            if pin['reversed']:
+                pwm = reverse_pwm(pwm)
+            pi.set_servo_pulsewidth(pin['pin'], pwm)
+
+
+def reverse_pwm(pwm):
+    new_pwm = pwm - 1500
+    return 1500 - new_pwm 
 
 def arm_motors(msg):
     if not lock.locked():
@@ -39,10 +47,10 @@ def arm_motors(msg):
 
 def arm_thread():
     lock.acquire()
-    for key, val in thruster_pins:
-        pi.set_servo_pulsewidth(key, 0)
+    for key in thruster_pins:
+        pi.set_servo_pulsewidth(thruster_pins[key]['pin'], 0)
         time.sleep(0.25)
-        pi.set_servo_pulsewidth(key, 1500)
+        pi.set_servo_pulsewidth(thruster_pins[key]['pin'], 1500)
         time.sleep(0.25)
     lock.release()
     # kill thread?
