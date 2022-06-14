@@ -18,11 +18,11 @@ pi = pigpio.pi("main", 8888)
 # thruster order: ['forward_left', 'forward_right', 'forward_top', 'sideways_top', 'up_left', 'up_right']
 thruster_pins = {
         'forward_left': {'pin': 21, 'reversed': True},      # Port Bow
-        'forward_right': {'pin': 26, 'reversed': True},     # Starboard Bow
-        'forward_top': {'pin': 16, 'reversed': False},      # Stern
-        'sideways_top': {'pin': 20, 'reversed': True},      # Bow
-        'up_left': {'pin': 12, 'reversed': False},          # Port
-        'up_right': {'pin': 19, 'reversed': False}          # Starboard
+        'forward_right': {'pin': 16, 'reversed': True},     # Starboard Bow
+        'forward_top': {'pin': 19, 'reversed': False},      # Stern
+        'sideways_top': {'pin': 12, 'reversed': True},      # Bow
+        'up_left': {'pin': 26, 'reversed': False},          # Port
+        'up_right': {'pin': 20, 'reversed': False}          # Starboard
         }
 
 
