@@ -12,12 +12,12 @@ layout = MultiArrayLayout(dim=dims, data_offset=0)
 pi = pigpio.pi("main", 8888)
 # thruster order: ['forward_left', 'forward_right', 'forward_top', 'sideways_top', 'up_left', 'up_right']
 thruster_pins = {
-        'forward_left': 21,         # Port Bow
-        'forward_right': 16,        # Starboard Bow
-        'forward_top': 19,          # Stern
+        'forward_left': 19,         # Port Bow
+        'forward_right': 20,        # Starboard Bow
+        'forward_top': 21,          # Stern
         'sideways_top': 12,         # Bow
         'up_left': 26,              # Port
-        'up_right': 20              # Starboard
+        'up_right': 16              # Starboard
         }
 
 pins = list(thruster_pins.values())
