@@ -39,8 +39,7 @@ def pwm_apply_callback(msg):
 
 def reverse_pwm(pwm):
     new_pwm = pwm - 1500
-    return 1500 - new_pwm
-
+    return 1500 - new_pwm 
 
 def arm_motors(msg):
     if not lock.locked():
@@ -49,10 +48,10 @@ def arm_motors(msg):
 
 def arm_thread():
     lock.acquire()
-    for key, val in thruster_pins:
-        pi.set_servo_pulsewidth(key, 0)
+    for key in thruster_pins:
+        pi.set_servo_pulsewidth(thruster_pins[key]['pin'], 0)
         time.sleep(0.25)
-        pi.set_servo_pulsewidth(key, 1500)
+        pi.set_servo_pulsewidth(thruster_pins[key]['pin'], 1500)
         time.sleep(0.25)
     lock.release()
     # kill thread?
