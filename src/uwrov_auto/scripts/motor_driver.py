@@ -1,7 +1,9 @@
+from asyncio.windows_events import NULL
 import pigpio
 import rospy
 import threading
 import time
+
 from std_msgs.msg import Int16MultiArray
 from std_msgs.msg import MultiArrayDimension
 from std_msgs.msg import MultiArrayLayout
@@ -11,7 +13,7 @@ listen_topic = '/nautilus/motors/pwm'
 arm_topic = '/nautilus/motors/arm'
 
 dims = [MultiArrayDimension('data', 6, 16)]
-layout = MultiArrayLayout(dims=dims, data_offset=0)
+layout = MultiArrayLayout(dim=dims, data_offset=0)
 lock = threading.Lock()
 
 pi = pigpio.pi("main", 8888)
@@ -41,7 +43,7 @@ def reverse_pwm(pwm):
     return 1500 - new_pwm
 
 
-def arm_motors(msg):
+def arm_motors():
     if not lock.locked():
         t = threading.Thread(target=arm_thread)
         t.start()
@@ -63,7 +65,7 @@ def main():
 
     rospy.init_node('motor_driver')
     rospy.Subscriber(listen_topic, Int16MultiArray, pwm_apply_callback)
-    rospy.Subscriber(ar,_topic, String, arm_motors)
+    rospy.Subscriber(arm_topic, String, arm_motors)
     rospy.on_shutdown(shutdown_fn)
     rospy.spin()
 
