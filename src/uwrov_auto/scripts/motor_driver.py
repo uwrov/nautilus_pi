@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 import pigpio
 import rospy
 import threading
@@ -43,17 +42,17 @@ def reverse_pwm(pwm):
     return 1500 - new_pwm
 
 
-def arm_motors():
+def arm_motors(msg):
     if not lock.locked():
         t = threading.Thread(target=arm_thread)
         t.start()
 
 def arm_thread():
     lock.acquire()
-    for key in thruster_pins:
-        pi.set_servo_pulsewidth(thruster_pins[key]['pin'], 0)
+    for key, val in thruster_pins:
+        pi.set_servo_pulsewidth(key, 0)
         time.sleep(0.25)
-        pi.set_servo_pulsewidth(thruster_pins[key]['pin'], 1500)
+        pi.set_servo_pulsewidth(key, 1500)
         time.sleep(0.25)
     lock.release()
     # kill thread?
