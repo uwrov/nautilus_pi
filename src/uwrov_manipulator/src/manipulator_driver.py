@@ -1,6 +1,6 @@
 import pigpio
 import rospy
-from std_msgs.msg import Int32
+from std_msgs.msg import Float32
 
 LISTEN_TOPIC = "/nautilus/manipulator/pwm"
 
@@ -15,16 +15,15 @@ def apply_percentage(msg):
     value = msg.data
     if value > PERCENTAGE_RANGE[1]: value = PERCENTAGE_RANGE[1]
     if value < PERCENTAGE_RANGE[0]: value = PERCENTAGE_RANGE[0]
-    calculated_value = ((RANGE[1] - RANGE[0]) * value / 100) + RANGE[0]
+    calculated_value = int(((RANGE[1] - RANGE[0]) * value / 100) + RANGE[0])
     pi.set_servo_pulsewidth(MANIPULATOR_PIN, calculated_value)
-    print(calculated_value)
 
 def main():
     print("Starting Manipulator Drivers")
     print('subscribing to:', LISTEN_TOPIC)
 
     rospy.init_node('manipulator_driver')
-    rospy.Subscriber(LISTEN_TOPIC, Int32, apply_percentage)
+    rospy.Subscriber(LISTEN_TOPIC, Float32, apply_percentage)
     rospy.on_shutdown(shutdown_fn)
     rospy.spin()
 
